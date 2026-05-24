@@ -237,7 +237,7 @@ onMounted(async () => {
       <!-- ── Step 1: Welcome ── -->
       <transition name="ob-slide" mode="out-in">
         <div v-if="step === 1" key="step1" class="ob-step ob-welcome">
-          <img :src="velance.settings.isDark ? '/logo-black.png' : '/logo-white.png'" class="ob-logo-img" alt="Velance" />
+          <img :src="velance.settings.isDark ? '/logo-white.png' : '/logo-black.png'" class="ob-logo-img" alt="Velance" />
           <div class="ob-step-head center">
             <span class="ob-kicker">Welcome to Velance</span>
             <h1 class="ob-title">Hey {{ displayName }}, <br>let's set up<br><span class="ob-gradient">your workspace</span></h1>

@@ -531,8 +531,7 @@ watch(
     <div v-if="checkingSession" class="startup-screen">
       <div class="startup-card">
         <div class="startup-mark">
-          <div class="startup-orbit"></div>
-          <div class="startup-logo">V</div>
+          <img :src="isDark ? '/logo-white.png' : '/logo-black.png'" class="startup-logo-img" alt="Velance" />
         </div>
         <h2>Loading Velance</h2>
         <p>Restoring your session, workspace, and local tracking context.</p>
@@ -545,8 +544,7 @@ watch(
     <div v-else-if="needsConsentGate" class="consent-screen">
       <div class="consent-card">
         <div class="startup-mark consent-mark">
-          <div class="startup-orbit"></div>
-          <div class="startup-logo">V</div>
+          <img :src="isDark ? '/logo-white.png' : '/logo-black.png'" class="startup-logo-img" alt="Velance" />
         </div>
         <span class="consent-kicker">Local-first privacy</span>
         <h2>Choose how Velance tracks on this device</h2>
@@ -588,7 +586,9 @@ watch(
         <!-- Sidebar Navigation -->
         <aside class="sidebar glass-panel">
           <div class="sidebar-brand">
-            <img :src="isDark ? '/logo-black.png' : '/logo-white.png'" class="logo-img mini" alt="Velance" />
+            <div class="brand-logo-box">
+              <img :src="isDark ? '/logo-white.png' : '/logo-black.png'" class="brand-logo-img" alt="Velance" />
+            </div>
             <h3>Velance</h3>
             <button
               type="button"
@@ -778,18 +778,6 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
   animation: startupSpin 1.3s linear infinite;
 }
 
-.startup-logo {
-  width: 64px;
-  height: 64px;
-  border-radius: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  font-weight: 700;
-  background: var(--accent-gradient);
-  color: white;
-}
 
 .startup-card h2 {
   font-size: 22px;
@@ -1076,8 +1064,38 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
   flex-shrink: 0;
 }
 
+.brand-logo-box {
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  border: 1px solid var(--surface-outline);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 6px;
+  box-sizing: border-box;
+}
+
+.brand-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+.startup-logo-img {
+  width: 72px;
+  height: 72px;
+  object-fit: contain;
+  border-radius: 18px;
+  padding: 6px;
+  border: 1px solid var(--surface-outline);
+  box-sizing: border-box;
+}
+
 .sidebar-brand h3 {
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   letter-spacing: -0.03em;
   white-space: nowrap;

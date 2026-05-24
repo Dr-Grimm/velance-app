@@ -9,6 +9,7 @@ const EXTERNAL = [
   'better-sqlite3',
   'electron',
   'electron-updater',
+  'node:sqlite',
 ]
 
 export default defineConfig({

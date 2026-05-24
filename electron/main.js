@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, Notification, shell } from 'electron'
-import { autoUpdater } from 'electron-updater'
+import electronUpdaterPkg from 'electron-updater'
+const { autoUpdater } = electronUpdaterPkg
 import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { createServer } from 'http'

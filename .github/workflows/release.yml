@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -28,13 +29,19 @@ jobs:
       - name: Rebuild native modules for Electron
         run: npm run rebuild:native
 
-      - name: Build and publish to GitHub Releases
+      - name: Build Vite app
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
           VITE_AUTH_OTP_LENGTH: ${{ secrets.VITE_AUTH_OTP_LENGTH }}
           VITE_APP_VERSION: ${{ github.ref_name }}
           VITE_PRIVACY_POLICY_URL: ${{ secrets.VITE_PRIVACY_POLICY_URL }}
           VITE_SUPPORT_URL: ${{ secrets.VITE_SUPPORT_URL }}
-        run: npm run dist:publish
+        run: npm run build
+
+      - name: Package and publish to GitHub Releases
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CSC_IDENTITY_AUTO_DISCOVERY: 'false'
+          DEBUG: electron-builder
+        run: npx electron-builder --win --publish=always

@@ -1,9 +1,13 @@
 {
   "name": "velance-app",
   "private": true,
-  "version": "0.9.0-beta.1",
+  "version": "0.9.0-beta.2",
   "description": "Local-first desktop productivity analytics, focus tracking, and evidence-based coaching.",
   "author": "Velance <support@velance.org>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Dr-Grimm/velance-app.git"
+  },
   "type": "module",
   "main": "dist-electron/main.js",
   "scripts": {
@@ -40,7 +44,9 @@
       "artifactName": "Velance-Setup-${version}.${ext}"
     },
     "publish": {
-      "provider": "github"
+      "provider": "github",
+      "owner": "Dr-Grimm",
+      "repo": "velance-app"
     },
     "nsis": {
       "oneClick": false,

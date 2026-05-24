@@ -1,0 +1,84 @@
+FYP Progress Demo Presentation Script
+
+Target length: about 8-10 minutes for the slide presentation only.
+Note: The live demo itself is not scripted here. This file is meant to keep the talking portion short, clear, and professional before and after the demo.
+
+Slide 1 - Title Slide
+Estimated time: 30-40 seconds
+Script:
+"Most productivity tools can tell us what we planned to do. Very few can tell us what actually happened while we were working. That idea is the starting point for Velance. Good [morning/afternoon], I am Jiviteshvaaren, and today I will present our progress demo for Velance, a local-first activity tracking and productivity monitoring application. I will first walk through the current system and what is already working, then I will move into a short live demo."
+
+Slide 2 - Project Description
+Estimated time: 45-55 seconds
+Script:
+"Velance is a desktop productivity analytics application built to monitor real work behavior across the operating system. It combines task planning, focus sessions, ambient activity tracking, analytics, and AI-assisted reflections in one workflow. The main significance of the project is that it does not rely only on manual timers or self-reporting. Instead, it uses signals like app usage, input activity, idle periods, and context switching to build a more realistic picture of focus and fatigue. At this stage, the system is already functioning as a prototype, and today we want to show that the core pipeline from tracking to insight is working end to end."
+
+Slide 3 - System Objectives
+Estimated time: 35-45 seconds
+Script:
+"We set three main objectives for the system. First, to track real-time user activity such as keyboard input, mouse movement, and idle behavior. Second, to analyse that behavioral data using an AI-supported engine that can interpret focus trends and signs of fatigue. Third, to visualize daily and weekly patterns in a way that helps users understand and improve how they work. In terms of progress, all three objectives are already represented in the prototype, although some areas like calibration and classification accuracy still need further refinement."
+
+Slide 4 - Module Diagram
+Estimated time: 30-40 seconds
+Script:
+"This slide shows the high-level structure of Velance. The system is organized into five main modules: user and profile management, focus session and task management, the activity tracking engine, analytics and visualization, and the AI focus insight module. We designed it this way so each part has a clear responsibility, but they still work together as one pipeline. The tracking engine supplies the behavioral data, the planning modules provide context, and the analytics and AI modules turn that data into something useful for the user."
+
+Slide 5 - User & Profile Management
+Estimated time: 35-45 seconds
+Script:
+"For user and profile management, the current prototype already supports secure sign-in using email OTP and Google OAuth. We also handle protected access, session restoration, and profile personalization such as goals and working hours. One important design decision here is that Velance is local-first. User identity is handled securely through Supabase, but the productivity data remains stored locally on the device. That gives us better privacy, faster access, and offline reliability, which are important for a monitoring system like this."
+
+Slide 6 - Focus Session & Task Management
+Estimated time: 45-55 seconds
+Script:
+"On the planning side, users can create and manage tasks with priorities, due dates, and status updates. They can view those tasks in list, kanban, or timeline formats depending on how they prefer to work. From there, any task can be launched directly into a focus session. During the session, Velance shows a live focus score, active apps, recent activity, and session controls. After the session ends, the user gets a structured review. This module is important because it connects intention with execution: not only what the user planned to do, but what actually happened while doing it."
+
+Slide 7 - Activity Tracking Engine
+Estimated time: 50-60 seconds
+Script:
+"This is the core engine behind the system. Velance continuously captures desktop activity such as active windows, keyboard and mouse interaction, idle behavior, and context switching. That data is stored as ambient activity chunks so we can build a continuous picture of user behavior, even outside formal focus sessions. The system then classifies those activities into productivity lanes such as productive, supporting, unclear, or distracting. Based on that stream, it calculates focus score and fatigue pressure. The current version is already working end to end, but this is also one of the areas where we still want to improve accuracy and tune the scoring logic more carefully."
+
+Slide 8 - Four Focus Pillars
+Estimated time: 55-65 seconds
+Script:
+"To make the focus score explainable, we break it into four pillars: presence, activity, continuity, and stability. Presence checks whether the user is genuinely engaged or repeatedly drifting into idle periods. Activity looks at keyboard and pointer rhythm, while still being fair to quieter work like reading or code review. Continuity reflects how often the user switches context, because frequent switching usually reduces momentum. Stability looks at whether the session stays within one dominant work lane. So instead of treating focus like a simple timer, we try to model it as observable behavior that can be explained and reviewed."
+
+Slide 9 - Fatigue Drivers
+Estimated time: 50-60 seconds
+Script:
+"We also estimate fatigue using four drivers: duration load, idle load, switch load, and focus decay. The idea here is not to diagnose the user, but to identify signals of increasing mental pressure during a work session. For example, a long session with repeated interruptions and a visible drop in focus near the end should be interpreted differently from a shorter and more stable session. This part of the prototype is already producing useful signals, but we want to be honest that the thresholds and weighting still need more testing and validation with broader usage patterns."
+
+Slide 10 - Analytics & Visualization
+Estimated time: 40-50 seconds
+Script:
+"All of that tracked data becomes useful only if the user can understand it quickly. So the analytics module presents daily and weekly views, focus and session trends, app usage breakdowns, peak working hours, fatigue signals, and links back to tasks and habits. The current dashboards already help reveal patterns in how the user works across the day. For future work, we want to deepen these views further, especially with raw fatigue trends, better comparisons between sessions, and easier correction of misclassified activities."
+
+Slide 11 - AI Focus Insight Module
+Estimated time: 40-50 seconds
+Script:
+"On top of the analytics layer, we added an AI insight module that generates reflections from tracked sessions, fatigue signals, app usage patterns, and behavioral summaries. The system supports both built-in local insights and optional Gemini-powered analysis, so it remains flexible without depending entirely on an external AI service. We also cache insights to avoid repeated processing. A practical design choice here is the fallback mechanism: if the AI service is unavailable, Velance still produces deterministic local feedback. So the feature remains useful even when external services are limited."
+
+Slide 12 - Next Up: Velance in Action
+Estimated time: 10-15 seconds
+Script:
+"That covers the current architecture and what is already implemented. The best way to evaluate the progress now is to see the workflow inside the actual application, so next I will move into a short live demo of Velance in action."
+
+Slide 13 - Conclusion
+Estimated time: 35-45 seconds
+Script:
+"To conclude, Velance has already evolved into a functional prototype that brings together planning, focus sessions, ambient tracking, analytics, and AI-assisted insight in one local-first desktop application. The main contribution so far is showing that productivity software can move beyond manual timers and checklists toward explainable behavioral evidence. At the same time, we are still realistic about what remains to be improved, especially classification accuracy, score calibration, stronger runtime privacy enforcement, and more personalized coaching. So the project has made solid progress, but it also has clear and meaningful next steps."
+
+Slide 14 - Thank You / Questions
+Estimated time: 10-15 seconds
+Script:
+"Thank you for listening. I am happy to answer any questions, especially about the scoring logic, privacy design, or the current limitations and future direction of the system."
+
+Suggested pacing:
+- Slides 1 to 11: around 7.5 to 8.5 minutes total
+- Slide 12 transition into demo: around 10 seconds
+- Slides 13 to 14 after demo: around 1 minute total
+
+Delivery tips:
+- Do not read the formulas on Slides 8 and 9 word for word. Summarize the idea behind them.
+- On Slides 2, 7, 9, and 13, lean slightly into the honest-progress tone by stressing that the prototype is working, while calibration and accuracy are still being improved.
+- Keep the transition to the demo confident and short. Let the product do the talking there.

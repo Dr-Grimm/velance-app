@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Velance Browser Bridge</title>
+    <style>
+      :root {
+        color-scheme: light;
+        font-family: "Segoe UI", system-ui, sans-serif;
+        background: #f5f8fb;
+        color: #0f172a;
+      }
+
+      body {
+        margin: 0;
+        min-width: 340px;
+        background:
+          radial-gradient(circle at top right, rgba(14, 165, 233, 0.14), transparent 36%),
+          radial-gradient(circle at bottom left, rgba(20, 184, 166, 0.12), transparent 28%),
+          #f5f8fb;
+      }
+
+      .shell {
+        padding: 16px;
+        display: grid;
+        gap: 12px;
+      }
+
+      .card {
+        border: 1px solid rgba(15, 23, 42, 0.08);
+        border-radius: 18px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 16px 32px rgba(15, 23, 42, 0.08);
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .header strong {
+        font-size: 18px;
+      }
+
+      .badge {
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(14, 165, 233, 0.1);
+        color: #0369a1;
+      }
+
+      .status.good {
+        color: #0f766e;
+      }
+
+      .status.warn {
+        color: #c2410c;
+      }
+
+      .muted {
+        color: #64748b;
+        font-size: 13px;
+        line-height: 1.5;
+      }
+
+      .meta-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .meta-card {
+        border-radius: 14px;
+        border: 1px solid rgba(15, 23, 42, 0.07);
+        background: rgba(248, 250, 252, 0.9);
+        padding: 10px 12px;
+      }
+
+      .meta-card span {
+        display: block;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: #64748b;
+        margin-bottom: 6px;
+      }
+
+      .meta-card strong {
+        display: block;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .list {
+        display: grid;
+        gap: 8px;
+      }
+
+      .list-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .list-header strong {
+        font-size: 13px;
+      }
+
+      .audible-row,
+      .audible-empty {
+        border-radius: 14px;
+        border: 1px solid rgba(15, 23, 42, 0.07);
+        background: rgba(248, 250, 252, 0.9);
+        padding: 10px 12px;
+        display: grid;
+        gap: 3px;
+      }
+
+      .audible-row strong {
+        font-size: 13px;
+      }
+
+      .audible-row span,
+      .audible-empty {
+        color: #64748b;
+        font-size: 12px;
+      }
+
+      button {
+        min-height: 42px;
+        border: none;
+        border-radius: 14px;
+        background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+        color: white;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      button.secondary {
+        background: rgba(15, 23, 42, 0.06);
+        color: #0f172a;
+        border: 1px solid rgba(15, 23, 42, 0.08);
+      }
+
+      .actions {
+        display: grid;
+        gap: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <div class="card">
+        <div class="header">
+          <strong>Velance browser bridge</strong>
+          <span class="badge" id="bridge-status">Checking</span>
+        </div>
+        <p class="muted" id="bridge-copy">Looking for the local Velance app bridge.</p>
+        <div class="actions">
+          <button id="grant-permission-btn" class="secondary" type="button">Allow browser access</button>
+          <button id="refresh-btn" type="button">Sync browser now</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="meta-grid">
+          <div class="meta-card">
+            <span>Browser app</span>
+            <strong id="browser-app">--</strong>
+          </div>
+          <div class="meta-card">
+            <span>Active site</span>
+            <strong id="browser-host">--</strong>
+          </div>
+          <div class="meta-card">
+            <span>Last event</span>
+            <strong id="last-event">--</strong>
+          </div>
+          <div class="meta-card">
+            <span>Last send</span>
+            <strong id="last-send">--</strong>
+          </div>
+          <div class="meta-card">
+            <span>Open tabs</span>
+            <strong id="open-tabs">--</strong>
+          </div>
+          <div class="meta-card">
+            <span>Audible tabs</span>
+            <strong id="audible-tabs">--</strong>
+          </div>
+          <div class="meta-card">
+            <span>Capture mode</span>
+            <strong id="capture-mode">--</strong>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="meta-card">
+          <span>Active page</span>
+          <strong id="browser-title">--</strong>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="list">
+          <div class="list-header">
+            <strong>Audible tabs</strong>
+            <span class="muted">Live browser audio</span>
+          </div>
+          <div id="audible-list"></div>
+        </div>
+      </div>
+    </div>
+    <script src="popup.js" type="module"></script>
+  </body>
+</html>

@@ -1,0 +1,94 @@
+/* global styles */
+:root {
+  --font-family: 'Plus Jakarta Sans', sans-serif;
+  
+  /* Backgrounds */
+  --bg-app: #F4F7FE;
+  --bg-sidebar: #FFFFFF;
+  --bg-card: #FFFFFF;
+  
+  /* Text */
+  --text-primary: #2B3674;
+  --text-secondary: #A3AED0;
+  
+  /* Accents (Pastel & Vibrant) */
+  --accent-purple: #4318FF;
+  --accent-purple-light: #E9E3FF;
+  --accent-blue: #39B8FF;
+  --accent-blue-light: #E1F4FF;
+  --accent-green: #01B574;
+  --accent-green-light: #EEFBF5;
+  --accent-orange: #FFB547;
+  --accent-orange-light: #FFF4E5;
+  --accent-pink: #EE5D50;
+  --accent-pink-light: #FCEAE9;
+  
+  /* Shadows */
+  --shadow-soft: 0px 18px 40px rgba(112, 144, 176, 0.12);
+  --shadow-card: 0px 10px 30px rgba(112, 144, 176, 0.08);
+  --shadow-float: 0px 20px 50px rgba(67, 24, 255, 0.2);
+  
+  /* Radii */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 30px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #E0E5F2;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Reusable Utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Base Card CSS */
+.glass-card {
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  padding: 24px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.glass-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-soft);
+}

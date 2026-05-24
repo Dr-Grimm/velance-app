@@ -23,7 +23,7 @@ import {
   LayoutDashboardIcon, CheckSquareIcon, TargetIcon,
   BarChartIcon, KanbanSquareIcon, LightbulbIcon, SettingsIcon,
   LogOutIcon, MoonIcon, SunIcon, ArrowRightIcon,
-  SidebarCloseIcon, SidebarOpenIcon
+  SidebarCloseIcon, SidebarOpenIcon, HelpCircleIcon
 } from 'lucide-vue-next'
 
 const router  = useRouter()
@@ -40,6 +40,7 @@ const consentGateDismissed = ref(false)
 const consentError = ref('')
 const localConsentDecision = ref(null)
 const sidebarCollapsed = ref(false)
+const coachMarks = ref(null)
 
 // True while we are still checking the JWT on startup
 const checkingSession = ref(true)
@@ -69,6 +70,10 @@ const toggleTheme = async () => {
   } catch (error) {
     console.warn('[Velance] Failed to save theme preference:', error)
   }
+}
+
+function restartTour() {
+  coachMarks.value?.resetTour()
 }
 
 function restoreSidebarPreference() {
@@ -629,6 +634,9 @@ watch(
           </nav>
 
           <div class="sidebar-footer">
+            <button class="theme-toggle" @click="restartTour" title="Replay page guide">
+              <HelpCircleIcon class="icon" />
+            </button>
             <button class="theme-toggle" @click="toggleTheme" title="Toggle Theme">
               <SunIcon v-if="isDark" class="icon" />
               <MoonIcon v-else class="icon" />
@@ -663,7 +671,7 @@ watch(
               </div>
             </transition>
           </router-view>
-          <PageCoachMarks :disabled="needsConsentGate" />
+          <PageCoachMarks ref="coachMarks" :disabled="needsConsentGate" />
         </main>
       </div>
   </div>

@@ -203,6 +203,18 @@ function skipAll() {
   targetRect.value = null
 }
 
+function resetTour() {
+  try {
+    localStorage.removeItem(SKIP_ALL_KEY)
+    for (const key of Object.keys(localStorage)) {
+      if (key.startsWith(DONE_PREFIX)) localStorage.removeItem(key)
+    }
+  } catch {}
+  void startPageTour()
+}
+
+defineExpose({ resetTour })
+
 function nextStep() {
   if (isLastStep.value) {
     finishPage()

@@ -366,7 +366,8 @@ onUnmounted(() => {
       <section class="hero-panel">
         <div class="hero-brand">
           <div class="hero-badge">
-            <img src="/logo-white.png" class="hero-logo-img" alt="Velance" />
+            <img src="/logo-black.png" class="hero-logo-img auth-logo-light" alt="Velance" />
+            <img src="/logo-white.png" class="hero-logo-img auth-logo-dark" alt="Velance" />
           </div>
           <div>
             <span class="hero-eyebrow">Velance</span>

@@ -8,6 +8,7 @@ const EXTERNAL = [
   'uiohook-napi',
   'better-sqlite3',
   'electron',
+  'electron-updater',
 ]
 
 export default defineConfig({

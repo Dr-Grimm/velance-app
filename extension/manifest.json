@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "Velance Browser Bridge",
+  "description": "Optional local browser context bridge for the Velance desktop app.",
+  "version": "1.0.0",
+  "permissions": [
+    "tabs",
+    "alarms",
+    "storage",
+    "scripting"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:48152/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "Velance Browser Bridge",
+    "default_popup": "popup.html"
+  },
+  "content_scripts": []
+}

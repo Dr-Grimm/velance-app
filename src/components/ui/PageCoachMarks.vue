@@ -1,6 +1,6 @@
 <script setup>
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { CheckIcon, ChevronRightIcon, XIcon } from 'lucide-vue-next'
 
 const props = defineProps({
@@ -8,6 +8,7 @@ const props = defineProps({
 })
 
 const route = useRoute()
+const router = useRouter()
 const activeIndex = ref(0)
 const visible = ref(false)
 const targetRect = ref(null)
@@ -100,6 +101,8 @@ const PAGE_TOURS = {
   ],
 }
 
+const PAGE_ORDER = ['/', '/tasks', '/focus', '/analytics', '/habits', '/insights', '/settings', '/profile']
+
 const normalizedPath = computed(() => {
   if (route.path === '/') return '/'
   const first = route.path.split('/').filter(Boolean)[0]
@@ -109,6 +112,15 @@ const steps = computed(() => PAGE_TOURS[normalizedPath.value] || [])
 const currentStep = computed(() => steps.value[activeIndex.value] || null)
 const isLastStep = computed(() => activeIndex.value >= steps.value.length - 1)
 const doneKey = computed(() => `${DONE_PREFIX}:${normalizedPath.value}`)
+
+const nextTourPage = computed(() => {
+  const idx = PAGE_ORDER.indexOf(normalizedPath.value)
+  for (let i = idx + 1; i < PAGE_ORDER.length; i++) {
+    if (PAGE_TOURS[PAGE_ORDER[i]]) return PAGE_ORDER[i]
+  }
+  return null
+})
+const isLastPageOfTour = computed(() => nextTourPage.value === null)
 
 const ringStyle = computed(() => {
   const rect = targetRect.value
@@ -218,6 +230,9 @@ defineExpose({ resetTour })
 function nextStep() {
   if (isLastStep.value) {
     finishPage()
+    if (nextTourPage.value) {
+      router.push(nextTourPage.value)
+    }
     return
   }
   activeIndex.value += 1
@@ -262,9 +277,9 @@ onBeforeUnmount(() => {
       <div class="coach-actions">
         <button type="button" class="coach-skip" @click="skipAll">Skip all</button>
         <button type="button" class="coach-next" @click="nextStep">
-          <CheckIcon v-if="isLastStep" size="14" />
-          <span>{{ isLastStep ? 'Finish' : 'Next' }}</span>
-          <ChevronRightIcon v-if="!isLastStep" size="14" />
+          <CheckIcon v-if="isLastStep && isLastPageOfTour" size="14" />
+          <span>{{ isLastStep ? (isLastPageOfTour ? 'Done' : 'Next page') : 'Next' }}</span>
+          <ChevronRightIcon v-if="!isLastStep || !isLastPageOfTour" size="14" />
         </button>
       </div>
     </aside>
@@ -341,7 +356,7 @@ onBeforeUnmount(() => {
   margin-top: 8px;
   color: var(--text-muted);
   font-size: 13px;
-  font-weight: 650;
+  font-weight: 400;
   line-height: 1.55;
 }
 

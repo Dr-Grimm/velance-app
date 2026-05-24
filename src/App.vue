@@ -761,21 +761,35 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
 
 .startup-mark {
   position: relative;
-  width: 88px;
-  height: 88px;
+  width: 96px;
+  height: 96px;
   margin: 0 auto 20px;
   display: grid;
   place-items: center;
 }
 
-.startup-orbit {
+/* Outer arc — slow clockwise */
+.startup-mark::before {
+  content: '';
   position: absolute;
   inset: 0;
-  border-radius: 999px;
-  border: 1px solid transparent;
-  border-top-color: rgba(0, 180, 216, 0.65);
-  border-right-color: rgba(82, 183, 136, 0.35);
-  animation: startupSpin 1.3s linear infinite;
+  border-radius: 50%;
+  border: 3px solid transparent;
+  border-top-color: #0ea5e9;
+  border-right-color: rgba(14, 165, 233, 0.35);
+  animation: startupSpin 2.2s linear infinite;
+}
+
+/* Inner arc — faster counter-clockwise */
+.startup-mark::after {
+  content: '';
+  position: absolute;
+  inset: 10px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-bottom-color: #14b8a6;
+  border-left-color: rgba(20, 184, 166, 0.35);
+  animation: startupSpin 1.3s linear infinite reverse;
 }
 
 
@@ -893,6 +907,11 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
 
 @keyframes startupSpin {
   to { transform: rotate(360deg); }
+}
+
+@keyframes logoPulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.82; transform: scale(0.93); }
 }
 
 /* ONBOARDING SCREEN */
@@ -1085,13 +1104,12 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
 }
 
 .startup-logo-img {
-  width: 72px;
-  height: 72px;
+  width: 62px;
+  height: 62px;
   object-fit: contain;
-  border-radius: 18px;
-  padding: 6px;
-  border: 1px solid var(--surface-outline);
-  box-sizing: border-box;
+  border-radius: 14px;
+  animation: logoPulse 2.2s ease-in-out infinite;
+  z-index: 1;
 }
 
 .sidebar-brand h3 {

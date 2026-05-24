@@ -354,8 +354,8 @@ onUnmounted(() => {
 
     <div v-if="!isDesktop" class="auth-shell desktop-only">
       <section class="desktop-card">
-        <img src="/logo-white.png" class="auth-logo auth-logo-light" alt="Velance" />
-        <img src="/logo-black.png" class="auth-logo auth-logo-dark" alt="Velance" />
+        <img src="/logo-black.png" class="auth-logo auth-logo-light" alt="Velance" />
+        <img src="/logo-white.png" class="auth-logo auth-logo-dark" alt="Velance" />
         <h1>Open Velance on desktop</h1>
         <p>The sign-in flow requires the Electron app to hand off sessions cleanly to your local workspace.</p>
       </section>
@@ -365,7 +365,9 @@ onUnmounted(() => {
       <!-- Left hero panel -->
       <section class="hero-panel">
         <div class="hero-brand">
-          <div class="hero-badge">V</div>
+          <div class="hero-badge">
+            <img src="/logo-white.png" class="hero-logo-img" alt="Velance" />
+          </div>
           <div>
             <span class="hero-eyebrow">Velance</span>
             <span class="hero-tagline">Your focus, measured.</span>
@@ -758,17 +760,22 @@ onUnmounted(() => {
 }
 
 .hero-badge {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border-radius: 16px;
   display: grid;
   place-items: center;
-  font-size: 22px;
-  font-weight: 800;
-  color: white;
-  background: linear-gradient(135deg, #0ea5e9, #14b8a6);
-  box-shadow: 0 14px 28px rgba(14, 165, 233, 0.22);
   flex-shrink: 0;
+  padding: 6px;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.hero-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
 }
 
 .hero-eyebrow {

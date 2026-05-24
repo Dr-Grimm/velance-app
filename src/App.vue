@@ -588,7 +588,7 @@ watch(
         <!-- Sidebar Navigation -->
         <aside class="sidebar glass-panel">
           <div class="sidebar-brand">
-            <div class="logo-box mini">V</div>
+            <img :src="isDark ? '/logo-black.png' : '/logo-white.png'" class="logo-img mini" alt="Velance" />
             <h3>Velance</h3>
             <button
               type="button"
@@ -1064,6 +1064,16 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
   border-radius: 10px;
   border: 1px solid var(--surface-outline);
   background: transparent;
+}
+
+.logo-img.mini {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  border: 1px solid var(--surface-outline);
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
 }
 
 .sidebar-brand h3 {

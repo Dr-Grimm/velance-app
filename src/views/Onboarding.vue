@@ -237,10 +237,7 @@ onMounted(async () => {
       <!-- ── Step 1: Welcome ── -->
       <transition name="ob-slide" mode="out-in">
         <div v-if="step === 1" key="step1" class="ob-step ob-welcome">
-          <div class="ob-logo-mark">
-            <div class="ob-logo-orbit"></div>
-            <div class="ob-logo">V</div>
-          </div>
+          <img :src="velance.settings.isDark ? '/logo-black.png' : '/logo-white.png'" class="ob-logo-img" alt="Velance" />
           <div class="ob-step-head center">
             <span class="ob-kicker">Welcome to Velance</span>
             <h1 class="ob-title">Hey {{ displayName }}, <br>let's set up<br><span class="ob-gradient">your workspace</span></h1>
@@ -701,36 +698,13 @@ onMounted(async () => {
 }
 
 /* ── Logo mark ── */
-.ob-logo-mark {
-  position: relative;
+.ob-logo-img {
   width: 96px;
   height: 96px;
-  display: grid;
-  place-items: center;
+  object-fit: contain;
+  display: block;
   margin: 0 auto;
-}
-
-.ob-logo-orbit {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  border: 2px solid transparent;
-  border-top-color: rgba(14, 165, 233, 0.7);
-  border-right-color: rgba(20, 184, 166, 0.4);
-  animation: obSpin 2s linear infinite;
-}
-
-.ob-logo {
-  width: 70px;
-  height: 70px;
   border-radius: 22px;
-  display: grid;
-  place-items: center;
-  font-size: 30px;
-  font-weight: 800;
-  color: white;
-  background: linear-gradient(135deg, #0ea5e9, #14b8a6);
-  box-shadow: 0 18px 36px rgba(14, 165, 233, 0.26);
 }
 
 @keyframes obSpin { to { transform: rotate(360deg); } }

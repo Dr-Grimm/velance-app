@@ -354,7 +354,8 @@ onUnmounted(() => {
 
     <div v-if="!isDesktop" class="auth-shell desktop-only">
       <section class="desktop-card">
-        <div class="auth-brand-badge">V</div>
+        <img src="/logo-white.png" class="auth-logo auth-logo-light" alt="Velance" />
+        <img src="/logo-black.png" class="auth-logo auth-logo-dark" alt="Velance" />
         <h1>Open Velance on desktop</h1>
         <p>The sign-in flow requires the Electron app to hand off sessions cleanly to your local workspace.</p>
       </section>
@@ -1330,17 +1331,17 @@ onUnmounted(() => {
   align-items: center;
 }
 
-.auth-brand-badge {
+.auth-logo {
   width: 60px;
   height: 60px;
+  object-fit: contain;
   border-radius: 18px;
-  display: grid;
-  place-items: center;
-  font-size: 26px;
-  font-weight: 800;
-  color: white;
-  background: linear-gradient(135deg, #0ea5e9, #14b8a6);
+  display: block;
 }
+
+.auth-logo-dark { display: none; }
+.dark-theme .auth-logo-light { display: none; }
+.dark-theme .auth-logo-dark { display: block; }
 
 .desktop-card h1 { font-size: 26px; letter-spacing: -0.04em; }
 .desktop-card p { color: var(--text-muted); font-size: 15px; line-height: 1.65; }

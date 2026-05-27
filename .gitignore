@@ -41,4 +41,7 @@ velance_report_v3_extracted.txt
 
 # Claude Code internal
 .claude/
-scripts/
+
+# Internal dev scripts (afterPack.cjs is a build script — must stay tracked)
+scripts/*.md
+scripts/*.txt

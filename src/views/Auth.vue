@@ -354,8 +354,7 @@ onUnmounted(() => {
 
     <div v-if="!isDesktop" class="auth-shell desktop-only">
       <section class="desktop-card">
-        <img src="/logo-black.png" class="auth-logo auth-logo-light" alt="Velance" />
-        <img src="/logo-white.png" class="auth-logo auth-logo-dark" alt="Velance" />
+        <img src="/logo.png" class="auth-logo" alt="Velance" />
         <h1>Open Velance on desktop</h1>
         <p>The sign-in flow requires the Electron app to hand off sessions cleanly to your local workspace.</p>
       </section>
@@ -366,8 +365,7 @@ onUnmounted(() => {
       <section class="hero-panel">
         <div class="hero-brand">
           <div class="hero-badge">
-            <img src="/logo-black.png" class="hero-logo-img auth-logo-light" alt="Velance" />
-            <img src="/logo-white.png" class="hero-logo-img auth-logo-dark" alt="Velance" />
+            <img src="/logo.png" class="hero-logo-img" alt="Velance" />
           </div>
           <div>
             <span class="hero-eyebrow">Velance</span>
@@ -685,7 +683,7 @@ onUnmounted(() => {
 /* Root */
 .auth-root {
   position: relative;
-  min-height: 100vh;
+  min-height: 100%;
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -761,21 +759,18 @@ onUnmounted(() => {
 }
 
 .hero-badge {
-  width: 56px;
-  height: 56px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
+  width: 44px;
+  height: 44px;
   flex-shrink: 0;
-  padding: 6px;
-  box-sizing: border-box;
+  border-radius: 12px;
   overflow: hidden;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.20));
 }
 
 .hero-logo-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
@@ -1342,14 +1337,12 @@ onUnmounted(() => {
 .auth-logo {
   width: 60px;
   height: 60px;
-  object-fit: contain;
-  border-radius: 18px;
+  object-fit: cover;
+  border-radius: 14px;
   display: block;
+  overflow: hidden;
+  filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.20));
 }
-
-.auth-logo-dark { display: none; }
-.dark-theme .auth-logo-light { display: none; }
-.dark-theme .auth-logo-dark { display: block; }
 
 .desktop-card h1 { font-size: 26px; letter-spacing: -0.04em; }
 .desktop-card p { color: var(--text-muted); font-size: 15px; line-height: 1.65; }

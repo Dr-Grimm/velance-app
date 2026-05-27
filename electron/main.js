@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Notification, shell } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu, Notification, shell } from 'electron'
 import electronUpdaterPkg from 'electron-updater'
 const { autoUpdater } = electronUpdaterPkg
 import { join, dirname } from 'path'
@@ -1171,7 +1171,8 @@ function createWindow() {
         height: 840,
         minWidth: 1000,
         minHeight: 680,
-        frame: true,
+        frame: process.platform === 'darwin',  // macOS keeps native traffic lights; Windows uses custom title bar
+        icon: join(process.env.DIST, 'logo.png'),
         webPreferences: {
             preload: join(__dirname, 'preload.cjs'),
             nodeIntegration: false,
@@ -1186,6 +1187,18 @@ function createWindow() {
     }
 
     mainWindow = new BrowserWindow(browserWindowOptions)
+
+    // Notify renderer when the window is maximized/restored so the custom title bar icon updates
+    mainWindow.on('maximize', () => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.webContents.send('velance:window:maximize-change', true)
+        }
+    })
+    mainWindow.on('unmaximize', () => {
+        if (mainWindow && !mainWindow.isDestroyed()) {
+            mainWindow.webContents.send('velance:window:maximize-change', false)
+        }
+    })
 
     mainWindow.webContents.on('did-finish-load', async () => {
         try {
@@ -1553,6 +1566,22 @@ ipcMain.on('velance:notify', (_, { title, body }) => {
 ipcMain.on('velance:window:minimize', () => {
     if (mainWindow && !mainWindow.isDestroyed()) {
         mainWindow.minimize()
+    }
+})
+
+ipcMain.on('velance:window:maximize', () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        if (mainWindow.isMaximized()) {
+            mainWindow.unmaximize()
+        } else {
+            mainWindow.maximize()
+        }
+    }
+})
+
+ipcMain.on('velance:window:close', () => {
+    if (mainWindow && !mainWindow.isDestroyed()) {
+        mainWindow.close()
     }
 })
 
@@ -2723,6 +2752,7 @@ function runExternalOAuthFlow(rawUrl) {
                         height: 680,
                         show: true,
                         title: 'Sign in with Google',
+                        icon: join(process.env.DIST, 'logo.png'),
                         webPreferences: {
                             nodeIntegration: false,
                             contextIsolation: true,
@@ -2805,6 +2835,8 @@ if (!hasSingleInstanceLock) {
 }
 
 if (hasSingleInstanceLock) app.whenReady().then(async () => {
+    app.setAppUserModelId('com.velance.app')
+    Menu.setApplicationMenu(null)
     writeRuntimeLog('startup.ready.begin')
     try {
         dataRepo = createDataRepository()

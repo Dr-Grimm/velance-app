@@ -38,3 +38,7 @@ velance_report_v3_extracted.txt
 *.njsproj
 *.sln
 *.sw?
+
+# Claude Code internal
+.claude/
+scripts/

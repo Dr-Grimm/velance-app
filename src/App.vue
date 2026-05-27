@@ -8,6 +8,7 @@ import { useActivityTracker } from './composables/useActivityTracker.js'
 import { useTaskReminders } from './composables/useTaskReminders.js'
 import { useHabitReminders } from './composables/useHabitReminders.js'
 import PageCoachMarks from './components/ui/PageCoachMarks.vue'
+import TitleBar from './components/TitleBar.vue'
 import {
   canTrackWithSettings,
   hasResolvedTrackingConsent,
@@ -528,13 +529,16 @@ watch(
 
 <template>
   <div class="velance-app" :class="{ 'dark-theme': isDark, 'light-theme': !isDark }">
+    <TitleBar />
+    <div class="app-body">
     <div v-if="checkingSession" class="startup-screen">
       <div class="startup-card">
         <div class="startup-mark">
-          <img :src="isDark ? '/logo-white.png' : '/logo-black.png'" class="startup-logo-img" alt="Velance" />
+          <img src="/logo.png" class="startup-logo-img" alt="Velance" />
         </div>
         <h2>Loading Velance</h2>
         <p>Restoring your session, workspace, and local tracking context.</p>
+        <div class="startup-dots"><span></span><span></span><span></span></div>
       </div>
     </div>
 
@@ -544,7 +548,7 @@ watch(
     <div v-else-if="needsConsentGate" class="consent-screen">
       <div class="consent-card">
         <div class="startup-mark consent-mark">
-          <img :src="isDark ? '/logo-white.png' : '/logo-black.png'" class="startup-logo-img" alt="Velance" />
+          <img src="/logo.png" class="startup-logo-img" alt="Velance" />
         </div>
         <span class="consent-kicker">Local-first privacy</span>
         <h2>Choose how Velance tracks on this device</h2>
@@ -587,7 +591,7 @@ watch(
         <aside class="sidebar glass-panel">
           <div class="sidebar-brand">
             <div class="brand-logo-box">
-              <img :src="isDark ? '/logo-white.png' : '/logo-black.png'" class="brand-logo-img" alt="Velance" />
+              <img src="/logo.png" class="brand-logo-img" alt="Velance" />
             </div>
             <h3>Velance</h3>
             <button
@@ -674,6 +678,7 @@ watch(
           <PageCoachMarks ref="coachMarks" :disabled="needsConsentGate" />
         </main>
       </div>
+    </div><!-- /.app-body -->
   </div>
 </template>
 
@@ -734,9 +739,18 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
 
 .velance-app {
   width: 100vw; height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: var(--bg-app);
   color: var(--text-main);
   transition: background 0.3s ease, color 0.3s ease;
+}
+
+.app-body {
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  position: relative;
 }
 
 .startup-screen {
@@ -760,36 +774,9 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
 }
 
 .startup-mark {
-  position: relative;
-  width: 96px;
-  height: 96px;
-  margin: 0 auto 20px;
-  display: grid;
-  place-items: center;
-}
-
-/* Outer arc — slow clockwise */
-.startup-mark::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  border: 3px solid transparent;
-  border-top-color: #0ea5e9;
-  border-right-color: rgba(14, 165, 233, 0.35);
-  animation: startupSpin 2.2s linear infinite;
-}
-
-/* Inner arc — faster counter-clockwise */
-.startup-mark::after {
-  content: '';
-  position: absolute;
-  inset: 10px;
-  border-radius: 50%;
-  border: 2px solid transparent;
-  border-bottom-color: #14b8a6;
-  border-left-color: rgba(20, 184, 166, 0.35);
-  animation: startupSpin 1.3s linear infinite reverse;
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 24px;
 }
 
 
@@ -905,13 +892,15 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
   color: var(--text-muted);
 }
 
-@keyframes startupSpin {
-  to { transform: rotate(360deg); }
+@keyframes logoRadar {
+  0%   { box-shadow: 0 6px 20px rgba(0,0,0,.18), 0 0 0 0   rgba(0, 180, 216, .40); }
+  70%  { box-shadow: 0 6px 20px rgba(0,0,0,.18), 0 0 0 14px rgba(0, 180, 216, 0);  }
+  100% { box-shadow: 0 6px 20px rgba(0,0,0,.18), 0 0 0 0   rgba(0, 180, 216, 0);  }
 }
 
-@keyframes logoPulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.82; transform: scale(0.93); }
+@keyframes dotPulse {
+  0%, 80%, 100% { opacity: 0.25; transform: scale(0.75); }
+  40%           { opacity: 1;    transform: scale(1);    }
 }
 
 /* ONBOARDING SCREEN */
@@ -1084,33 +1073,45 @@ body, html { width: 100%; height: 100%; overflow: hidden; background: var(--bg-a
 }
 
 .brand-logo-box {
-  width: 46px;
-  height: 46px;
-  border-radius: 13px;
-  border: 1px solid var(--surface-outline);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 34px;
+  height: 34px;
   flex-shrink: 0;
-  padding: 6px;
-  box-sizing: border-box;
+  border-radius: 9px;
+  overflow: hidden;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.22));
 }
 
 .brand-logo-img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
 }
 
 .startup-logo-img {
-  width: 62px;
-  height: 62px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
-  border-radius: 14px;
-  animation: logoPulse 2.2s ease-in-out infinite;
-  z-index: 1;
+  border-radius: 16px;
+  display: block;
+  animation: logoRadar 2s ease-out infinite;
 }
+
+.startup-dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin-top: 14px;
+}
+.startup-dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent-base);
+  animation: dotPulse 1.4s ease-in-out infinite;
+}
+.startup-dots span:nth-child(2) { animation-delay: 0.2s; }
+.startup-dots span:nth-child(3) { animation-delay: 0.4s; }
 
 .sidebar-brand h3 {
   font-size: 20px;

@@ -47,7 +47,8 @@
     "publish": {
       "provider": "github",
       "owner": "Dr-Grimm",
-      "repo": "velance-app"
+      "repo": "velance-app",
+      "releaseType": "release"
     },
     "nsis": {
       "oneClick": false,

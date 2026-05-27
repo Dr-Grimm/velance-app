@@ -237,7 +237,7 @@ onMounted(async () => {
       <!-- ── Step 1: Welcome ── -->
       <transition name="ob-slide" mode="out-in">
         <div v-if="step === 1" key="step1" class="ob-step ob-welcome">
-          <img :src="velance.settings.isDark ? '/logo-white.png' : '/logo-black.png'" class="ob-logo-img" alt="Velance" />
+          <img src="/logo.png" class="ob-logo-img" alt="Velance" />
           <div class="ob-step-head center">
             <span class="ob-kicker">Welcome to Velance</span>
             <h1 class="ob-title">Hey {{ displayName }}, <br>let's set up<br><span class="ob-gradient">your workspace</span></h1>
@@ -561,8 +561,8 @@ onMounted(async () => {
 .ob-root {
   position: relative;
   height: 100%;
-  min-height: 100vh;
-  max-height: 100vh;
+  min-height: 100%;
+  max-height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   display: flex;
@@ -701,10 +701,12 @@ onMounted(async () => {
 .ob-logo-img {
   width: 96px;
   height: 96px;
-  object-fit: contain;
+  object-fit: cover;
   display: block;
   margin: 0 auto;
   border-radius: 22px;
+  overflow: hidden;
+  filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.22));
 }
 
 @keyframes obSpin { to { transform: rotate(360deg); } }

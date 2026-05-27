@@ -42,8 +42,22 @@
         gap: 12px;
       }
 
+      .header-brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+      }
+
+      .header-logo {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        display: block;
+        flex-shrink: 0;
+      }
+
       .header strong {
-        font-size: 18px;
+        font-size: 16px;
       }
 
       .badge {
@@ -162,7 +176,10 @@
     <div class="shell">
       <div class="card">
         <div class="header">
-          <strong>Velance browser bridge</strong>
+          <div class="header-brand">
+            <img src="icons/icon48.png" class="header-logo" alt="Velance" />
+            <strong>Velance browser bridge</strong>
+          </div>
           <span class="badge" id="bridge-status">Checking</span>
         </div>
         <p class="muted" id="bridge-copy">Looking for the local Velance app bridge.</p>

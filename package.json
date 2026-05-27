@@ -19,15 +19,16 @@
     "electron": "electron .",
     "electron:build": "vite build && electron .",
     "rebuild:native": "electron-builder install-app-deps",
-    "dist:win": "vite build && electron-builder --win",
-    "dist:publish": "vite build && electron-builder --win --publish=always"
+    "dist:win": "vite build && electron-builder --win && node -e \"require('fs').rmSync('release/app/win-unpacked',{recursive:true,force:true})\"",
+    "dist:publish": "vite build && electron-builder --win --publish=always && node -e \"require('fs').rmSync('release/app/win-unpacked',{recursive:true,force:true})\""
   },
   "build": {
     "appId": "com.velance.app",
     "productName": "Velance",
     "npmRebuild": false,
+    "afterPack": "./scripts/afterPack.cjs",
     "directories": {
-      "output": "release"
+      "output": "release/app"
     },
     "files": [
       "dist/**/*",
@@ -73,6 +74,7 @@
     "@vitejs/plugin-vue": "^6.0.2",
     "electron": "^40.6.1",
     "electron-builder": "^26.8.1",
+    "rcedit": "^5.0.2",
     "sass": "^1.97.3",
     "vite": "^7.3.1",
     "vite-plugin-electron": "^0.29.0",

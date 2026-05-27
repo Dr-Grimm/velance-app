@@ -33,7 +33,16 @@ const velanceApi = {
     ipcRenderer.removeAllListeners('velance:productivity-pulse')
   },
   setTrackingUser: (userId) => ipcRenderer.send('velance:tracking:set-user', userId),
+  platform: process.platform,
   minimizeWindow: () => ipcRenderer.send('velance:window:minimize'),
+  maximizeWindow: () => ipcRenderer.send('velance:window:maximize'),
+  closeWindow: () => ipcRenderer.send('velance:window:close'),
+  onMaximizeChange: (callback) => {
+    ipcRenderer.on('velance:window:maximize-change', (_, val) => callback(val))
+  },
+  removeMaximizeChangeListener: () => {
+    ipcRenderer.removeAllListeners('velance:window:maximize-change')
+  },
   notify: (title, body) => ipcRenderer.send('velance:notify', { title, body }),
   runtime: {
     applyPolicy: (data) => ipcRenderer.invoke('velance:runtime:apply-policy', data),

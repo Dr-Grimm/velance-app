@@ -1,7 +1,7 @@
 {
   "name": "velance-app",
   "private": true,
-  "version": "0.9.0-beta.5",
+  "version": "0.9.0-beta.6",
   "description": "Local-first desktop productivity analytics, focus tracking, and evidence-based coaching.",
   "author": "Velance <support@velance.org>",
   "repository": {

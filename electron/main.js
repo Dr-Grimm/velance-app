@@ -1828,6 +1828,7 @@ async function resolveClassificationEdgeCases({
         const text = await requestAiText(buildClassificationCleanupPrompt(candidates), aiSettings, {
             temperature: 0.15,
             maxOutputTokens: 900,
+            responseMimeType: 'application/json',
         })
         const parsed = parseClassificationCleanupResponse(text)
 
@@ -2229,6 +2230,7 @@ async function requestAiText(prompt, settings = {}, {
     temperature = 0.45,
     maxOutputTokens = 1600,
     timeoutMs = 25000,
+    responseMimeType = null,
 } = {}) {
     const aiSettings = normalizeAiSettings(settings)
     if (!aiSettings.hasKey || !aiSettings.apiKey) throw new Error('No AI API key configured')
@@ -2251,7 +2253,7 @@ async function requestAiText(prompt, settings = {}, {
                     `${baseUrl}/v1beta/models/${encodeURIComponent(model)}:generateContent`,
                     {
                         contents: [{ parts: [{ text: prompt }] }],
-                        generationConfig: { temperature, maxOutputTokens },
+                        generationConfig: { temperature, maxOutputTokens, ...(responseMimeType ? { responseMimeType } : {}) },
                     },
                     { 'x-goog-api-key': aiSettings.apiKey },
                     timeoutMs,
@@ -2456,7 +2458,7 @@ ipcMain.handle('velance:insights:generate', async (_, { userId, context }) => {
     try {
         const safeContext = sanitizeInsightContext(context)
         const prompt = buildInsightPrompt(safeContext, aiSettings)
-        const text = await requestAiText(prompt, aiSettings)
+        const text = await requestAiText(prompt, aiSettings, { responseMimeType: 'application/json' })
         writeRuntimeLog('insights.generate.succeeded', {
             userId: safeUserId,
             provider: aiSettings.provider,
@@ -2494,6 +2496,7 @@ ipcMain.handle('velance:analysis:explain-day', async (_, { userId, context }) =>
         const text = await requestAiText(prompt, aiSettings, {
             temperature: 0.35,
             maxOutputTokens: 1200,
+            responseMimeType: 'application/json',
         })
         return {
             ok: true,

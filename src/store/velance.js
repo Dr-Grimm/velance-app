@@ -60,6 +60,8 @@ import { getRecentLocalDateKeys, getTodayLocalDateKey } from '../services/dateKe
 import { buildInsightContext as buildInsightContextRecord } from '../services/insightContext.js'
 import { isDefaultWorkspaceId } from '../services/workspaceIdentity.js'
 import { normalizeAiModel, normalizeAiProvider } from '../services/aiProvider.js'
+import { TRACKING_CONSENT_VERSION, hasTrackingConsent } from '../services/trackingConsent.js'
+import { applyTrackingConsentDecision, writeTrackingConsentFallback } from '../services/trackingConsentState.js'
 import {
   clearInsightCacheMirror,
   clearLegacyGlobalMirror,
@@ -740,6 +742,40 @@ export const useVelanceStore = defineStore('velance', () => {
     if (sync) queueCloudSync('settings')
   }
 
+  // Centralized, verified tracking-consent grant/revoke.
+  // Used by the onboarding gate, Settings, and the focus-session block screen so
+  // there is a single robust path that cannot leave a user silently stuck.
+  async function setTrackingConsent(granted = true) {
+    const at = Date.now()
+    const decision = { resolved: true, granted: Boolean(granted), version: TRACKING_CONSENT_VERSION, at }
+
+    // Apply to in-memory settings first so the UI unblocks immediately.
+    applyTrackingConsentDecision(settings.value, decision)
+
+    // Persist a local fallback keyed to this workspace. If a later hydrate reloads a
+    // stale DB row, restoreLocalConsentDecision() can recover the choice from here.
+    try { writeTrackingConsentFallback({ workspaceId: currentWorkspaceId.value, granted, at }) } catch {}
+
+    // Persist to SQLite + push the runtime policy to the main process.
+    await saveSettings()
+
+    // Read-back verification: confirm the database actually stored the choice.
+    // A slow/failed save previously left consent half-applied (true in memory,
+    // false on disk) which silently blocked tracking after the next hydrate.
+    try {
+      const bootstrap = await getBootstrapData(currentWorkspaceId.value)
+      const persisted = bootstrap?.settings || {}
+      if (Boolean(persisted.trackingConsentGranted) !== Boolean(granted)) {
+        applyTrackingConsentDecision(settings.value, decision)
+        await saveSettings()
+      }
+    } catch (error) {
+      console.warn('[Velance] Tracking consent read-back verification failed:', error)
+    }
+
+    return hasTrackingConsent(settings.value)
+  }
+
   async function saveInsightFeedback(feedback) {
     try {
       insightFeedback.value = await saveInsightFeedbackRecord(feedback, currentWorkspaceId.value)
@@ -1308,6 +1344,7 @@ export const useVelanceStore = defineStore('velance', () => {
     saveProfile,
     settings,
     saveSettings,
+    setTrackingConsent,
     tasks,
     todayTasks,
     completedToday,

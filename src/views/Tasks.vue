@@ -759,7 +759,7 @@ watch(
   },
 )
 
-// ─── Timeline task drag-to-reschedule ───────────────────────────────────────
+// --- Timeline task drag-to-reschedule ---------------------------------------
 const LONG_PRESS_MS = 400
 const DRAG_CANCEL_PX = 8
 const EDGE_ZONE_PX = 80
@@ -1123,7 +1123,7 @@ function cancelTimelineTaskDrag() {
                   <strong>{{ day.longLabel }}</strong>
                 </header>
                 <div v-if="isDraggingTimelineTask && timelineDragTargetKey === day.key && isDragTargetPast" class="drag-past-warning">
-                  ⚠ Past date
+                  Past date
                 </div>
 
                 <div class="timeline-stack">
@@ -2924,7 +2924,7 @@ function cancelTimelineTaskDrag() {
   cursor: pointer;
 }
 
-/* ── Timeline drag-to-reschedule ─────────────────────────────── */
+/* -- Timeline drag-to-reschedule ------------------------------- */
 
 /* Source card while being dragged */
 .timeline-task.tl-dragging,
@@ -2933,14 +2933,14 @@ function cancelTimelineTaskDrag() {
   pointer-events: none;
 }
 
-/* Drop target column — normal */
+/* Drop target column - normal */
 .timeline-column.drag-over {
   border-color: var(--accent-base);
   background: color-mix(in srgb, var(--accent-base) 10%, var(--surface-muted));
   box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-base) 30%, transparent);
 }
 
-/* Drop target column — past date */
+/* Drop target column - past date */
 .timeline-column.drag-over-past {
   border-color: #f97316;
   background: color-mix(in srgb, #f97316 8%, var(--surface-muted));
@@ -3625,7 +3625,7 @@ function cancelTimelineTaskDrag() {
   }
 }
 
-/* ─── DARK THEME OVERRIDES ─────────────────────────────────────────────────── */
+/* --- DARK THEME OVERRIDES --------------------------------------------------- */
 /* Dark-text tag variants that are invisible on dark card backgrounds */
 :global(.dark-theme .tasks-module .meta-pill.challenge),
 :global(.dark-theme .tasks-module .challenge-tag){

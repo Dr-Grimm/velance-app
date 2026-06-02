@@ -910,7 +910,7 @@ async function confirmClearData() {
   .stats-strip { flex-wrap: wrap; gap: 16px; }
 }
 
-/* ─── DARK THEME OVERRIDES ─────────────────────────────────────────────────── */
+/* --- DARK THEME OVERRIDES --------------------------------------------------- */
 /* Headings and titles always correct in dark mode */
 :global(.dark-theme .profile-module h1),
 :global(.dark-theme .profile-module h2),
@@ -919,7 +919,7 @@ async function confirmClearData() {
   color: var(--text-main) !important;
 }
 
-/* Google pill color fine for both modes; connection pill uses CSS vars — no override needed */
+/* Google pill color fine for both modes; connection pill uses CSS vars - no override needed */
 
 /* Card backgrounds */
 :global(.dark-theme .profile-module .hero-card),

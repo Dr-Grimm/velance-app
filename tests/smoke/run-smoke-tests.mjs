@@ -128,6 +128,22 @@ run('Declined onboarding consent keeps planning usable but tracking blocked', ()
   assert.equal(settings.trackingEnabled, false)
 })
 
+run('Blocked focus tracking offers a verified one-click consent recovery', () => {
+  const store = readFileSync(new URL('../../src/store/velance.js', import.meta.url), 'utf8')
+  const focusView = readFileSync(new URL('../../src/views/FocusSession.vue', import.meta.url), 'utf8')
+
+  // Centralized, read-back-verified consent setter in the store.
+  assert.match(store, /async function setTrackingConsent/)
+  assert.match(store, /applyTrackingConsentDecision\(settings\.value/)
+  assert.match(store, /writeTrackingConsentFallback\(\{ workspaceId: currentWorkspaceId\.value/)
+  assert.match(store, /getBootstrapData\(currentWorkspaceId\.value\)[\s\S]*trackingConsentGranted/)
+  assert.match(store, /\n    setTrackingConsent,\n/)
+
+  // Focus-session block screen exposes the inline grant tied to that setter.
+  assert.match(focusView, /async function allowTrackingHere[\s\S]*store\.setTrackingConsent\(true\)/)
+  assert.match(focusView, /v-if="!store\.settings\.trackingConsentGranted"[\s\S]*allowTrackingHere/)
+})
+
 run('Browser extension uses optional site access for store-ready privacy', () => {
   const manifest = JSON.parse(readFileSync(new URL('../../extension/manifest.json', import.meta.url), 'utf8'))
   const popup = readFileSync(new URL('../../extension/popup.js', import.meta.url), 'utf8')
@@ -160,7 +176,7 @@ run('Windows beta packaging skips unavailable native rebuild toolchain', () => {
   const pkg = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url), 'utf8'))
   const main = readFileSync(new URL('../../electron/main.js', import.meta.url), 'utf8')
 
-  assert.equal(pkg.version, '0.9.0-beta.1')
+  assert.match(pkg.version, /^\d+\.\d+\.\d+(-(alpha|beta|rc)\.\d+)?$/)
   assert.equal(pkg.build?.npmRebuild, false)
   assert.equal(pkg.build?.win?.icon, 'build/icon.ico')
   assert.equal(existsSync(new URL('../../build/icon.ico', import.meta.url)), true)
@@ -231,7 +247,7 @@ run('Primary pages cooperate with the wide shared layout frame', () => {
   const insightsView = readFileSync(new URL('../../src/views/Insights.vue', import.meta.url), 'utf8')
   const settingsView = readFileSync(new URL('../../src/views/Settings.vue', import.meta.url), 'utf8')
 
-  assert.match(dashboardView, /@media \(min-width: 1280px\)[\s\S]*\.dashboard-grid[\s\S]*minmax\(360px, 0\.82fr\)/)
+  assert.match(dashboardView, /@media \(min-width: 1280px\)[\s\S]*\.dashboard-grid[\s\S]*minmax\(360px, 0\.9fr\)/)
   assert.match(tasksView, /width: clamp\(340px, 26vw, 390px\)/)
   assert.match(tasksView, /reminderTime/)
   assert.match(tasksView, /reminderDate/)

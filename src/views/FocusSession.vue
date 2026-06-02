@@ -33,6 +33,8 @@ const tracker = useActivityTracker()
 const ambient = useAmbientTracker()
 
 const goal = ref('')
+const consentBusy = ref(false)
+const consentError = ref('')
 const durationMode = ref('60')
 const durationGoalMinutes = ref(60)
 const minimizeOnStart = ref(true)
@@ -1450,6 +1452,25 @@ function openPrivacySettings() {
   router.push('/settings')
 }
 
+// One-click consent grant directly from the block screen, so a user is never
+// stuck having to hunt for the right toggle in Settings.
+async function allowTrackingHere() {
+  if (consentBusy.value) return
+  consentBusy.value = true
+  consentError.value = ''
+  try {
+    const granted = await store.setTrackingConsent(true)
+    if (!granted) {
+      consentError.value = 'Could not save your choice. Please try again or open Privacy settings.'
+    }
+  } catch (error) {
+    console.warn('[Velance] Inline consent grant failed:', error)
+    consentError.value = 'Could not save your choice. Please try again or open Privacy settings.'
+  } finally {
+    consentBusy.value = false
+  }
+}
+
 function selectReviewDetailMode(mode) {
   if (reviewModes.some((entry) => entry.id === mode)) {
     reviewDetailMode.value = mode
@@ -1723,12 +1744,23 @@ onUnmounted(() => {
                 {{ item }}
               </span>
             </div>
+            <p v-if="consentError" class="tracking-block-error">{{ consentError }}</p>
           </div>
           <div class="tracking-block-actions">
             <button class="secondary-btn compact" type="button" @click="openTasksBoard">
               Use Tasks
             </button>
-            <button class="primary-cta compact" type="button" @click="openPrivacySettings">
+            <button
+              v-if="!store.settings.trackingConsentGranted"
+              class="primary-cta compact"
+              type="button"
+              :disabled="consentBusy"
+              @click="allowTrackingHere"
+            >
+              <ShieldAlertIcon class="icon" />
+              {{ consentBusy ? 'Enabling...' : 'Allow tracking' }}
+            </button>
+            <button class="secondary-btn compact" type="button" @click="openPrivacySettings">
               <SettingsIcon class="icon" />
               Open Privacy
             </button>
@@ -2874,6 +2906,13 @@ onUnmounted(() => {
   grid-template-columns: auto minmax(0, 1fr) auto;
   gap: 16px;
   align-items: center;
+}
+
+.tracking-block-error {
+  margin-top: 10px;
+  color: #dc2626;
+  font-size: 0.82rem;
+  font-weight: 600;
 }
 
 .tracking-block-icon {
@@ -4779,20 +4818,20 @@ onUnmounted(() => {
   }
 }
 
-/* ─── DARK THEME OVERRIDES ─────────────────────────────────────────────────────
+/* --- DARK THEME OVERRIDES -----------------------------------------------------
    FocusSession uses many dark-on-light semantic colors throughout the review
    state. These overrides provide bright equivalents suitable for dark backgrounds.
    Color mapping:
-     #0f766e (dark teal)      → #2dd4bf (teal-400, bright)
-     #c2410c (dark orange-red)→ #fb923c (orange-400, bright)
-     #0369a1 (dark blue)      → #38bdf8 (sky-400, bright)
-     #0284c7 (dark blue)      → #38bdf8 (sky-400, bright)
-     #1d4ed8 (dark indigo)    → #60a5fa (blue-400, bright)
-     #9a3412 (dark rust)      → #fb923c (orange-400, bright)
-     #ea580c (dark orange)    → #fb923c (orange-400, bright)
-     #2563eb (dark blue)      → #60a5fa (blue-400, bright)
-     #64748b (dark slate)     → #94a3b8 (slate-400, lighter)
-──────────────────────────────────────────────────────────────────────────────── */
+     #0f766e (dark teal)      -> #2dd4bf (teal-400, bright)
+     #c2410c (dark orange-red)-> #fb923c (orange-400, bright)
+     #0369a1 (dark blue)      -> #38bdf8 (sky-400, bright)
+     #0284c7 (dark blue)      -> #38bdf8 (sky-400, bright)
+     #1d4ed8 (dark indigo)    -> #60a5fa (blue-400, bright)
+     #9a3412 (dark rust)      -> #fb923c (orange-400, bright)
+     #ea580c (dark orange)    -> #fb923c (orange-400, bright)
+     #2563eb (dark blue)      -> #60a5fa (blue-400, bright)
+     #64748b (dark slate)     -> #94a3b8 (slate-400, lighter)
+-------------------------------------------------------------------------------- */
 
 /* Score tiles (live state) */
 :global(.dark-theme .focus-v2 .score-tile.good strong){

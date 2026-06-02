@@ -142,6 +142,12 @@ run('Blocked focus tracking offers a verified one-click consent recovery', () =>
   // Focus-session block screen exposes the inline grant tied to that setter.
   assert.match(focusView, /async function allowTrackingHere[\s\S]*store\.setTrackingConsent\(true\)/)
   assert.match(focusView, /v-if="!store\.settings\.trackingConsentGranted"[\s\S]*allowTrackingHere/)
+
+  // Dashboard guidance enables ambient tracking in one click instead of just
+  // routing to Settings, so background tracking can be recovered from there too.
+  const dashboardView = readFileSync(new URL('../../src/views/Dashboard.vue', import.meta.url), 'utf8')
+  assert.match(dashboardView, /async function enableTrackingFromDashboard[\s\S]*store\.setTrackingConsent\(true\)/)
+  assert.match(dashboardView, /Open Privacy'[\s\S]*enableTrackingFromDashboard\(\)/)
 })
 
 run('Browser extension uses optional site access for store-ready privacy', () => {

@@ -727,13 +727,32 @@ const dashboardRecommendation = computed(() => buildDashboardRecommendation({
   currentHour: now.value.getHours(),
 }))
 
+// One-click enable from the dashboard guidance card. This grants consent (and
+// turns tracking on) so ambient background tracking starts immediately, instead
+// of just routing the user to Settings to hunt for the toggle. Falls back to
+// Settings if the verified save does not take.
+const consentBusy = ref(false)
+async function enableTrackingFromDashboard() {
+  if (consentBusy.value) return
+  consentBusy.value = true
+  try {
+    const granted = await store.setTrackingConsent(true)
+    if (!granted) router.push('/settings')
+  } catch (error) {
+    console.warn('[Velance] Dashboard tracking enable failed:', error)
+    router.push('/settings')
+  } finally {
+    consentBusy.value = false
+  }
+}
+
 const handleDashboardCTA = () => {
   if (dashboardRecommendation.value.cta === 'Create First Task' || dashboardRecommendation.value.cta === 'Review Tasks') {
     router.push('/tasks')
     return
   }
   if (dashboardRecommendation.value.cta === 'Open Privacy' || dashboardRecommendation.value.cta === 'Open Settings') {
-    router.push('/settings')
+    void enableTrackingFromDashboard()
     return
   }
   if (dashboardRecommendation.value.cta === 'Set Break Timer') {
@@ -876,8 +895,8 @@ const resetBreak = () => {
         <h3>{{ dashboardRecommendation.title }}</h3>
         <p>{{ dashboardRecommendation.text }}</p>
         <div class="hero-panel-actions">
-          <button class="primary-action" @click="handleDashboardCTA">
-            {{ dashboardRecommendation.cta }}
+          <button class="primary-action" :disabled="consentBusy" @click="handleDashboardCTA">
+            {{ consentBusy ? 'Enabling...' : dashboardRecommendation.cta }}
             <ArrowRightIcon size="15" />
           </button>
           <button class="ghost-action" @click="router.push('/focus')">
